@@ -7,8 +7,8 @@ import (
 )
 
 //OpenFont - функция для открытия файла с шрифтом и чтения построчно
-func OpenFont(args []string, haveBanner bool) []string {
-	if len(args) == 1 || haveBanner && len(args) == 2 {
+func OpenFont(art ASCIIArt) []string {
+	if len(art.Argument) == 1 || art.Output && len(art.Argument) == 2 {
 		file, err := os.Open("standard.txt") //открываем файл
 		if err != nil {
 			fmt.Printf("ascii art fs: open '%s' no such file or directory\n", "standard")
@@ -26,13 +26,12 @@ func OpenFont(args []string, haveBanner bool) []string {
 			fmt.Println("ascii art: standard font is empty")
 			os.Exit(0)
 		}
-
 		return str
 	}
 	//fmt.Println(args[findFont(args)])
-	file, err := os.Open(args[findFont(args)] + ".txt") //открываем файл
+	file, err := os.Open(art.Argument[findFont(art)] + ".txt") //открываем файл
 	if err != nil {
-		fmt.Printf("ascii art fs: open '%s' no such file or directory\n", args[1])
+		fmt.Printf("ascii art fs: open '%s' no such file or directory\n", art.Argument[1])
 		os.Exit(0)
 	}
 	defer file.Close()                // отложенная функция закрытия файла
@@ -44,24 +43,23 @@ func OpenFont(args []string, haveBanner bool) []string {
 		cnt++
 	}
 	if cnt != 855 {
-		fmt.Printf("ascii art: '%s' is not a font\n", args[1])
+		fmt.Printf("ascii art: '%s' is not a font\n", art.Argument[1])
 		os.Exit(0)
 	}
 
 	return str
 }
 
-func findFont(args []string) int {
-	ishave, idx := ValidASCIIOutput(args)
+func findFont(art ASCIIArt) int {
+	ishave, idx := ValidASCIIOutput(art)
 	if ishave {
-		for i := 1; i < len(args); i++ {
-			if i == idx+1 {
+		for i := 1; i < len(art.Argument); i++ {
+			if i == idx {
 				continue
 			} else {
-				return i + 1
+				return i
 			}
 		}
 	}
-
 	return 1
 }
