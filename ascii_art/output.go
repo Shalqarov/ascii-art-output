@@ -5,7 +5,6 @@ import (
 	"os"
 )
 
-// ASCIIArt - структура, сделал, чтобы легче читалось
 type ASCIIArt struct {
 	Argument []string
 	Str      []string
@@ -14,10 +13,9 @@ type ASCIIArt struct {
 	Asciifs  bool
 }
 
-// Output ...
+// Output - optional of ASCII-Art
 func Output(art ASCIIArt, filename string) {
-	file, err := os.OpenFile(filename,
-		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
 	}

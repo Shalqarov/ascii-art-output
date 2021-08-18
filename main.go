@@ -24,8 +24,8 @@ func main() {
 		return
 	}
 
-	temp := strings.ReplaceAll(art.Argument[0], "\n", "\\n") //заменил все \n на \\n, чтобы была корректная строка, если не дописать кавычку
-	art.Str = strings.Split(temp, "\\n")                     // разделил аргумент на строки
+	temp := strings.ReplaceAll(art.Argument[0], "\n", "\\n")
+	art.Str = strings.Split(temp, "\\n")
 
 	art.Fileinfo = ascii.OpenFont(art)
 
@@ -34,5 +34,4 @@ func main() {
 	} else {
 		ascii.ConsoleOutput(art)
 	}
-
 }

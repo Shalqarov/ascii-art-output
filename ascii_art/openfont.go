@@ -6,53 +6,53 @@ import (
 	"os"
 )
 
-//OpenFont - функция для открытия файла с шрифтом и чтения построчно
+//OpenFont - opens file and write info from file line-by-line to var
 func OpenFont(art ASCIIArt) []string {
 	if len(art.Argument) == 1 || art.Output && len(art.Argument) == 2 {
-		file, err := os.Open("standard.txt") //открываем файл
+		file, err := os.Open("fonts/standard.txt")
 		if err != nil {
 			fmt.Printf("ascii art fs: open '%s' no such file or directory\n", "standard")
 			os.Exit(0)
 		}
-		defer file.Close()                // отложенная функция закрытия файла
-		scanner := bufio.NewScanner(file) //создаем переменную сканнер, сканируем файл
+		defer file.Close()
+		//scanning...
+		scanner := bufio.NewScanner(file)
 		str := []string{}
-		cnt := 0 //переменная для подсчета строк
+		//Writing file line-by-line to var str
 		for scanner.Scan() {
-			str = append(str, scanner.Text()) // построчно записываем в массив строк . Каждая строка, как отдельный элемент массива
-			cnt++
+			str = append(str, scanner.Text())
 		}
-		if cnt != 855 {
-			fmt.Println("ascii art: standard font is empty")
+		if len(str) != 855 {
+			fmt.Println("ascii art: standard font is empty or it is not a font")
 			os.Exit(0)
 		}
 		return str
 	}
 
-	file, err := os.Open(art.Argument[findFont(art)] + ".txt") //открываем файл
+	file, err := os.Open("fonts/" + art.Argument[findFont(art)] + ".txt")
 	if err != nil {
 		fmt.Printf("ascii art fs: open '%s' no such file or directory\n", art.Argument[1])
 		os.Exit(0)
 	}
-	defer file.Close() // отложенная функция закрытия файла
+	defer file.Close()
 
-	scanner := bufio.NewScanner(file) //создаем переменную сканнер, сканируем файл
+	scanner := bufio.NewScanner(file)
 	str := []string{}
-	cnt := 0 //переменная для подсчета строк
 
+	//Writing file line-by-line to var str
 	for scanner.Scan() {
-		str = append(str, scanner.Text()) // построчно записываем в массив строк . Каждая строка, как отдельный элемент массива
-		cnt++
+		str = append(str, scanner.Text())
 	}
 
-	if cnt != 855 {
-		fmt.Printf("ascii art: '%s' is not a font\n", art.Argument[1])
+	if len(str) != 855 {
+		fmt.Printf("ascii art: '%s' is empty or it is not a font\n", art.Argument[1])
 		os.Exit(0)
 	}
 
 	return str
 }
 
+//findFont - returns index of font in our arguments
 func findFont(art ASCIIArt) int {
 	ishave, idx := ValidASCIIOutput(art)
 	if ishave {
